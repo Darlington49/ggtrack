@@ -1,21 +1,80 @@
-var mqtt = require("mqtt");
+const mqtt = require("mqtt");
+const client = mqtt.connect("mqtt://test.mosquitto.org");
 var count = 0;
+require("dotenv").config();
+// const Payload = require("Payload");
 
-var options={
-    clientId:"mqttjs01",
-    port:8000,
-    //host:'192.168.1.71',
-    //protocol:'mqtts',
-    rejectUnauthorized : false,
+const express = require('express')
+const app = express()
+const port = process.env.PORT
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+
+const mongoose = require("mongoose");
+const { Payload } = require("./Payload");
+const connect = mongoose
+    // .connect(mongoURI, {
+  .connect(process.env.mongoURI, {
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true,
+    // useCreateIndex: true,
+    // useFindAndModify: false,
+  })
+  .then(() => console.log("MongoDB Connected..."))
+  .catch((err) => console.log(err));
+
+//publish
+function publish(topic, msg, options) {
+  console.log("publishing", msg);
+
+  if (client.connected == true) {
+    client.publish(topic, msg, options);
+  }
+  count += 1;
+}
+
+client.on("connect", function () {
+  client.subscribe("presence", function (err) {
+    if (!err) {
+      client.publish("presence", "Hello mqtt");
     }
-    var client  = mqtt.connect("mqtt://broker.mqttdashboard.com",options);
-// var client = mqtt.connect("mqtt://broker.mqttdashboard.com", { clientId: "mqttjs01" }); 
-console.log("connected flag  " + client.connected);
+  });
+});
 
-//handle incoming messages
-client.on("message", function (topic, message, packet) {
-  console.log("message is " + message);
-  console.log("topic is " + topic);
+client.on("message", function (topic, msg) {
+  // msg is Buffer
+  console.log("\t\tmessage : " + msg.toString());
+  console.log("\t\ttopic  : " + topic);
+
+  // Save a message that come from the client to Mongo DB
+  connect.then((db) => {
+    try {
+      let payload = new Payload({
+        message: msg.toString(),
+        topic: topic,
+      });
+
+      payload.save((err, doc) => {
+        if (err) return res.json({ succes: false, err });
+
+        Payload.find({ _id: doc._id })
+          //   .populate("sender")
+          .exec((err, doc) => {
+            console.log(err);
+            console.log("Output Payload Message", doc);
+          });
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  });
+  //   client.end();
 });
 
 client.on("connect", function () {
@@ -28,20 +87,6 @@ client.on("error", function (error) {
   process.exit(1);
 });
 
-//publish
-function publish(topic, msg, options) {
-  console.log("publishing", msg);
-
-  if (client.connected == true) {
-    client.publish(topic, msg, options);
-  }
-  count += 1;
-  if (count == 2)
-    //ens script
-    clearTimeout(timer_id); //stop timer
-  client.end();
-}
-
 //////////////
 
 var options = {
@@ -49,17 +94,14 @@ var options = {
   qos: 1,
 };
 var topic = "testtopic";
-var message = "test message";
-var topic_list = ["topic2", "topic3", "topic4"];
-var topic_o = { topic22: 0, topic33: 1, topic44: 1 };
+
 console.log("subscribing to topics");
 client.subscribe(topic, { qos: 1 }); //single topic
-client.subscribe(topic_list, { qos: 1 }); //topic list
-client.subscribe(topic_o); //object
-var timer_id = setInterval(function () {
-  publish(topic, message, options);
-}, 5000);
+
+// var timer_id = setInterval(function () {
+//   publish(topic, count.toString(), options);
+//   console.log(count);
+// }, 5000);
+
 //notice this is printed even before we connect
-console.log("end of script");
-
-
+// console.log("end of script");
