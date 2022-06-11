@@ -1,12 +1,12 @@
 const mqtt = require("mqtt");
 const client = mqtt.connect("mqtt://test.mosquitto.org");
 var count = 0;
-require("dotenv").config();
+// require("dotenv").config();
 // const Payload = require("Payload");
 
 const express = require('express')
 const app = express()
-const port = process.env.PORT
+const port = process.env.PORT 
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
