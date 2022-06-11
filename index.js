@@ -4,22 +4,27 @@ var count = 0;
 // require("dotenv").config();
 // const Payload = require("Payload");
 
-const express = require('express')
-const app = express()
-const port = process.env.PORT 
+const express = require("express");
+const app = express();
+const port = process.env.PORT;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
+app.get("/payloads", function (req, res) {
+  Payload.find({}).then(function (payloads) {
+    res.send(payloads);
+  });
+});
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});
 
 const mongoose = require("mongoose");
 const { Payload } = require("./Payload");
 const connect = mongoose
-    // .connect(mongoURI, {
+  // .connect(mongoURI, {
   .connect(process.env.mongoURI, {
     // useNewUrlParser: true,
     // useUnifiedTopology: true,
