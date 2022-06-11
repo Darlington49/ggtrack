@@ -2,7 +2,7 @@
   "name": "mqtt001",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "mqtt.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.0.1",
+    "mongoose": "^6.3.6",
     "mqtt": "^4.3.7"
   }
 }
