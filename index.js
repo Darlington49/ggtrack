@@ -1,17 +1,23 @@
 const mqtt = require("mqtt");
 const client = mqtt.connect("mqtt://test.mosquitto.org");
 var count = 0;
-// require("dotenv").config();
+//  require("dotenv").config();
 // const Payload = require("Payload");
-
+const path = require('path');
 const express = require("express");
 const app = express();
 const port = process.env.PORT;
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use(express.static('public'));
+app.use('/static', express.static('public'));
 
+// app.get("/", (req, res) => {
+//   res.send("Hello World!");
+// });
+// sendFile will go here
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '/index.html'));
+});
 app.get("/payloads", function (req, res) {
   Payload.find({}).then(function (payloads) {
     res.send(payloads);
