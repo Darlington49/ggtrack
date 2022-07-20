@@ -105,6 +105,7 @@ var options = {
   qos: 1,
 };
 var topic = "testtopic";
+var gpstopic = "5onrEVstfb";
 
 console.log("subscribing to topics");
 client.subscribe(topic, { qos: 1 }); //single topic
