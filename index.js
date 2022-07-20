@@ -51,11 +51,11 @@ function publish(topic, msg, options) {
 }
 
 client.on("connect", function () {
-  client.subscribe("presence", function (err) {
-    if (!err) {
-      client.publish("presence", "Hello mqtt");
-    }
-  });
+//   client.subscribe("presence", function (err) {
+//     if (!err) {
+//       client.publish("presence", "Hello mqtt");
+//     }
+//   });
 });
 
 client.on("message", function (topic, msg) {
