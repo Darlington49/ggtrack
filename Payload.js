@@ -14,7 +14,7 @@ const PayloadSchema = mongoose.Schema(
     "Speed": { type: String, },
     "Altitude": { type: String, },
     "Visible Satellites": { type: String, },
-    " Used Satellites": { type: String, },
+    "Used Satellites": { type: String, },
     "Accuracy": { type: String, },
     "Year": { type: String, },
     "Month": { type: String, },
