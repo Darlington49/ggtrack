@@ -9,6 +9,19 @@ const PayloadSchema = mongoose.Schema(
     topic: {
       type: String,
     },
+    "Latitude": { type: String, },
+    "Longitude": { type: String, },
+    "Speed": { type: String, },
+    "Altitude": { type: String, },
+    "Visible Satellites": { type: String, },
+    " Used Satellites": { type: String, },
+    "Accuracy": { type: String, },
+    "Year": { type: String, },
+    "Month": { type: String, },
+    "Day": { type: String, },
+    "Hour": { type: String, },
+    "Minute": { type: String, },
+    "Second": { type: String, }
   },
   { timestamps: true }
 );
