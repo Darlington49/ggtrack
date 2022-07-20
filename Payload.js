@@ -21,7 +21,8 @@ const PayloadSchema = mongoose.Schema(
     "Day": { type: String, },
     "Hour": { type: String, },
     "Minute": { type: String, },
-    "Second": { type: String, }
+    "Second": { type: String, },
+    "DeviceID": { type: String, }
   },
   { timestamps: true }
 );
