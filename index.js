@@ -52,7 +52,7 @@ function publish(topic, msg, options) {
 
 client.on("connect", function () {
 //   client.subscribe("presence", function (err) {
-//     if (!err) {
+//     if (!err) { 
 //       client.publish("presence", "Hello mqtt");
 //     }
 //   });
