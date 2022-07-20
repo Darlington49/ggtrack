@@ -108,7 +108,7 @@ var topic = "testtopic";
 var gpstopic = "5onrEVstfb";
 
 console.log("subscribing to topics");
-client.subscribe(topic, { qos: 1 }); //single topic
+client.subscribe(gpstopic, { qos: 1 }); //single topic
 
 // var timer_id = setInterval(function () {
 //   publish(topic, count.toString(), options);
